@@ -1,0 +1,11 @@
+bin/
+obj/
+*.db
+*.dll
+*.pdb
+*.cache
+*.json
+*.log
+*.exe
+*.so
+*.dylib
