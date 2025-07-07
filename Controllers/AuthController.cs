@@ -18,6 +18,9 @@ namespace ResumeAnalyzerAPI.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
+            if (string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.Password) || string.IsNullOrWhiteSpace(model.FullName))
+                return BadRequest("Email, password, and full name are required.");
+
             var user = await _authService.RegisterAsync(model.Email, model.Password, model.FullName);
             if (user == null)
                 return BadRequest("User already exists");
@@ -27,6 +30,9 @@ namespace ResumeAnalyzerAPI.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] LoginModel model)
         {
+            if (string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.Password))
+                return BadRequest("Email and password are required.");
+
             var user = await _authService.AuthenticateAsync(model.Email, model.Password);
             if (user == null)
                 return Unauthorized();
@@ -37,14 +43,14 @@ namespace ResumeAnalyzerAPI.Controllers
 
     public class RegisterModel
     {
-        public string Email { get; set; }
-        public string Password { get; set; }
-        public string FullName { get; set; }
+        public string? Email { get; set; }
+        public string? Password { get; set; }
+        public string? FullName { get; set; }
     }
 
     public class LoginModel
     {
-        public string Email { get; set; }
-        public string Password { get; set; }
+        public string? Email { get; set; }
+        public string? Password { get; set; }
     }
 } 

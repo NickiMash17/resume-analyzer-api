@@ -26,7 +26,7 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
             ValidIssuer = builder.Configuration["Jwt:Issuer"],
             ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+                Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!))
         };
     });
 
@@ -34,6 +34,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IResumeParser, ResumeParserService>();
 builder.Services.AddScoped<INlpService, NlpService>();
+builder.Services.AddControllers();
 
 var app = builder.Build();
 
@@ -48,6 +49,8 @@ app.UseHttpsRedirection();
 
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapControllers();
 
 var summaries = new[]
 {

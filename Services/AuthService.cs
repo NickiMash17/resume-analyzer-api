@@ -49,11 +49,11 @@ namespace ResumeAnalyzerAPI.Services
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                new Claim(ClaimTypes.Email, user.Email),
-                new Claim(ClaimTypes.Name, user.FullName ?? "")
+                new Claim(ClaimTypes.Email, user.Email ?? string.Empty),
+                new Claim(ClaimTypes.Name, user.FullName ?? string.Empty)
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_config["Jwt:Key"]!));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
 
             var token = new JwtSecurityToken(

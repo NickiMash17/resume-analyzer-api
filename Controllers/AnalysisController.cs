@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using ResumeAnalyzerAPI.Services;
+using ResumeAnalyzerAPI.Models;
 
 namespace ResumeAnalyzerAPI.Controllers
 {
@@ -20,12 +21,12 @@ namespace ResumeAnalyzerAPI.Controllers
         }
 
         [HttpPost("analyze")]
-        public async Task<IActionResult> AnalyzeResume([FromForm] IFormFile file)
+        public async Task<IActionResult> AnalyzeResume([FromForm] ResumeUploadDto dto)
         {
-            if (file == null || file.Length == 0)
+            if (dto.File == null || dto.File.Length == 0)
                 return BadRequest("No file uploaded");
 
-            var textContent = await _resumeParser.ParseResumeAsync(file);
+            var textContent = await _resumeParser.ParseResumeAsync(dto.File);
             var analysisResult = await _nlpService.AnalyzeTextAsync(textContent);
 
             return Ok(new {
