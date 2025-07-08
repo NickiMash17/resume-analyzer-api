@@ -1,5 +1,9 @@
 # Resume Analyzer API
 
+[![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet)](https://dotnet.microsoft.com/)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![API](https://img.shields.io/badge/API-RESTful-blue)](https://restfulapi.net/)
+
 An AI-powered RESTful API built with ASP.NET Core for analyzing resumes (PDF, DOCX).
 Features JWT authentication, file upload, text extraction, and mock NLP analysis.
 
@@ -165,3 +169,9 @@ If you see errors like:
 
 ## License
 MIT
+
+---
+
+<div align="center">
+  Made with ❤️ by <a href="https://github.com/NickiMash17">NickiMash17</a>
+</div>
