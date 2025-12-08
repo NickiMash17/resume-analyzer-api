@@ -1,0 +1,26 @@
+{
+  "name": "ai-resume-analyzer",
+  "version": "1.0.0",
+  "description": "AI-powered resume analysis platform",
+  "private": true,
+  "scripts": {
+    "dev:backend": "cd backend && dotnet watch run",
+    "dev:frontend": "cd frontend && npm run dev",
+    "build:backend": "cd backend && dotnet build",
+    "build:frontend": "cd frontend && npm run build",
+    "install:frontend": "cd frontend && npm install",
+    "setup": "npm run install:frontend && cd backend && dotnet restore && dotnet ef database update"
+  },
+  "keywords": [
+    "resume",
+    "analysis",
+    "ai",
+    "nlp",
+    "asp.net",
+    "react",
+    "typescript"
+  ],
+  "author": "",
+  "license": "MIT"
+}
+

@@ -1,16 +1,15 @@
-# 🎯 Resume Analyzer API
+# 🎯 AI Resume Analyzer
 
 <div align="center">
-  
+
 [![.NET](https://img.shields.io/badge/.NET-8.0-512BD4?logo=dotnet&logoColor=white)](https://dotnet.microsoft.com/)
+[![React](https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=white)](https://react.dev/)
+[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![API](https://img.shields.io/badge/API-RESTful-blue)](https://restfulapi.net/)
-[![Build Status](https://img.shields.io/badge/Build-Passing-brightgreen)](https://github.com/NickiMash17/resume-analyzer-api)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](CONTRIBUTING.md)
 
-*Transform resume analysis with AI-powered insights*
+*Professional AI-powered resume analysis platform with modern web interface*
 
-**[📖 Documentation](#-api-documentation--testing) • [🚀 Quick Start](#-quick-start) • [🔧 API Reference](#-api-reference) • [🤝 Contributing](#-contributing)**
+**[📖 Documentation](#-documentation) • [🚀 Quick Start](#-quick-start) • [🏗️ Architecture](#️-architecture) • [🤝 Contributing](#-contributing)**
 
 </div>
 
@@ -18,347 +17,286 @@
 
 ## 💡 Overview
 
-The **Resume Analyzer API** is a sophisticated, AI-powered solution that revolutionizes how organizations process and analyze resumes. Built with modern .NET 8 architecture, this RESTful API seamlessly extracts, analyzes, and provides actionable insights from resume documents.
+**AI Resume Analyzer** is a full-stack application that provides intelligent resume analysis using advanced NLP techniques. The platform features a modern React frontend and a robust .NET 8 API backend, delivering actionable insights to help job seekers optimize their resumes.
 
-### 🎨 What Makes It Special
+### 🎨 Key Features
 
-- **🤖 Intelligent Analysis**: Advanced NLP processing for keyword extraction and sentiment analysis
-- **📄 Universal Format Support**: Handles PDF and DOCX files with ease
-- **🔐 Enterprise Security**: JWT-based authentication with BCrypt password hashing
-- **⚡ Performance Optimized**: Lightweight SQLite database with Entity Framework Core
-- **🎯 Developer Friendly**: Interactive Swagger documentation and intuitive API design
-- **🏗️ Scalable Architecture**: Clean, extensible service-oriented design
-
----
-
-## 🚀 Features
-
-<table>
-<tr>
-<td width="50%">
-
-### 🔐 Authentication & Security
-- **JWT Token-based Auth** — Secure user sessions
-- **BCrypt Password Hashing** — Industry-standard security
-- **Role-based Authorization** — Granular access control
-
-### 📄 Document Processing
-- **Multi-format Support** — PDF & DOCX compatibility
-- **Intelligent Text Extraction** — Clean, structured content parsing
-- **File Upload Validation** — Size and type restrictions
-
-</td>
-<td width="50%">
-
-### 🧠 AI-Powered Analysis
-- **Keyword Extraction** — Identify key skills and technologies
-- **Sentiment Analysis** — Gauge resume tone and confidence
-- **Smart Suggestions** — Actionable improvement recommendations
-
-### 🛠️ Developer Experience
-- **Interactive Documentation** — Swagger/OpenAPI integration
-- **RESTful Design** — Clean, predictable endpoints
-- **Comprehensive Testing** — Built-in test controllers
-
-</td>
-</tr>
-</table>
+- **🤖 Intelligent Analysis**: Advanced NLP processing for keyword extraction, sentiment analysis, and actionable suggestions
+- **📄 Multi-Format Support**: Handles PDF and DOCX resume files seamlessly
+- **🎨 Modern UI**: Beautiful, responsive React frontend with Tailwind CSS
+- **🔐 Secure Authentication**: JWT-based authentication with BCrypt password hashing
+- **⚡ High Performance**: Optimized backend with Entity Framework Core and SQLite
+- **📊 Detailed Insights**: Comprehensive analysis including keywords, entities, scores, and improvement suggestions
+- **🛡️ Production Ready**: Professional architecture with error handling, validation, and CORS configuration
 
 ---
 
-## 🛠️ Technology Stack
+## 🏗️ Architecture
 
-<div align="center">
+### Project Structure
 
-| Category | Technology | Purpose |
-|----------|------------|---------|
-| **Core Framework** | .NET 8 / ASP.NET Core | High-performance web API |
-| **Database** | Entity Framework Core + SQLite | Lightweight ORM solution |
-| **Authentication** | JWT + BCrypt.Net-Next | Secure user management |
-| **Documentation** | Swashbuckle.AspNetCore | Interactive API docs |
-| **File Processing** | UglyToad.PdfPig + DocumentFormat.OpenXml | Document parsing |
-| **NLP Engine** | Custom Service (Extensible) | Text analysis & insights |
+```
+ai-resume-analyzer/
+├── backend/                 # .NET 8 Web API
+│   ├── Controllers/         # API endpoints
+│   ├── Services/           # Business logic
+│   ├── Models/             # Data models
+│   ├── Data/               # Database context
+│   └── Migrations/         # EF Core migrations
+│
+├── frontend/               # React + TypeScript + Vite
+│   ├── src/
+│   │   ├── components/     # Reusable components
+│   │   ├── contexts/       # React contexts (Auth)
+│   │   ├── pages/          # Page components
+│   │   ├── services/       # API service layer
+│   │   └── App.tsx         # Main app component
+│   └── package.json
+│
+└── README.md               # This file
+```
 
-</div>
+### Technology Stack
+
+#### Backend
+- **.NET 8** - Modern C# web framework
+- **Entity Framework Core** - ORM for database operations
+- **SQLite** - Lightweight database
+- **JWT Bearer** - Authentication
+- **Swagger/OpenAPI** - API documentation
+- **UglyToad.PdfPig** - PDF parsing
+- **DocumentFormat.OpenXml** - DOCX parsing
+
+#### Frontend
+- **React 19** - UI library
+- **TypeScript** - Type-safe JavaScript
+- **Vite** - Build tool and dev server
+- **React Router** - Client-side routing
+- **Axios** - HTTP client
+- **Tailwind CSS** - Utility-first CSS framework
+- **Lucide React** - Icon library
 
 ---
 
 ## 🚀 Quick Start
 
-### 📋 Prerequisites
+### Prerequisites
 
-Ensure you have the following installed:
 - [.NET 8 SDK](https://dotnet.microsoft.com/download) (Latest LTS)
+- [Node.js](https://nodejs.org/) 18+ and npm
 - Git for version control
-- Your favorite IDE (Visual Studio, VS Code, or JetBrains Rider)
 
-### ⚡ Installation
+### Installation
+
+#### 1. Clone the Repository
 
 ```bash
-# 1. Clone the repository
-git clone https://github.com/NickiMash17/resume-analyzer-api.git
-cd resume-analyzer-api
+git clone <repository-url>
+cd ai-resume-analyzer
+```
 
-# 2. Restore NuGet packages
+#### 2. Backend Setup
+
+```bash
+cd backend
+
+# Restore NuGet packages
 dotnet restore
 
-# 3. Set up the database
+# Set up the database
 dotnet ef database update
 
-# 4. Launch the API
+# Run the API (default: http://localhost:5065)
 dotnet run
 ```
 
+The API will be available at `http://localhost:5065` with Swagger UI at `http://localhost:5065/swagger`.
+
+#### 3. Frontend Setup
+
+```bash
+cd frontend
+
+# Install dependencies
+npm install
+
+# Start development server (default: http://localhost:5173)
+npm run dev
+```
+
+The frontend will be available at `http://localhost:5173`.
+
 ### 🎉 Verify Installation
 
-Open your browser and navigate to:
-```
-http://localhost:5065/swagger
-```
-
-You should see the interactive API documentation! 🎊
+1. **Backend**: Navigate to `http://localhost:5065/swagger` - you should see the API documentation
+2. **Frontend**: Navigate to `http://localhost:5173` - you should see the login page
 
 ---
 
-## 📖 API Documentation & Testing
+## 📖 Documentation
 
-### 🌐 Swagger UI
+### API Endpoints
 
-Experience the API through our interactive documentation:
+#### Authentication
 
-```
-🔗 http://localhost:5065/swagger
-```
+- `POST /api/auth/register` - Register a new user
+  ```json
+  {
+    "email": "user@example.com",
+    "password": "SecurePassword123!",
+    "fullName": "John Doe"
+  }
+  ```
 
-**Features:**
-- 🔧 **Try It Out** — Test endpoints directly in your browser
-- 📤 **File Upload Testing** — Drag & drop resume files
-- 🔐 **Authentication Testing** — JWT token management
-- 📊 **Response Visualization** — Real-time API responses
+- `POST /api/auth/login` - Authenticate user
+  ```json
+  {
+    "email": "user@example.com",
+    "password": "SecurePassword123!"
+  }
+  ```
 
-### 🧪 Testing Endpoints
+#### Resume Analysis
 
-The API includes dedicated test controllers for development:
-- `/api/test/upload` — Verify file upload functionality
-- Health check endpoints for monitoring
+- `POST /api/analysis/analyze` - Analyze resume (requires authentication)
+  - **Headers**: `Authorization: Bearer <JWT_TOKEN>`
+  - **Content-Type**: `multipart/form-data`
+  - **Body**:
+    - `File`: Resume file (PDF/DOCX, max 5MB)
+    - `Description`: Optional job description
+
+### Frontend Routes
+
+- `/login` - Login page
+- `/register` - Registration page
+- `/dashboard` - Main dashboard (protected)
 
 ---
 
-## 🔧 API Reference
+## 🔧 Configuration
 
-### 👤 Authentication Flow
+### Backend Configuration
 
-<details>
-<summary><strong>POST</strong> <code>/api/auth/register</code> — Create New User</summary>
+Edit `backend/appsettings.json`:
 
-**Request Body:**
 ```json
 {
-  "email": "developer@example.com",
-  "password": "SecurePassword123!",
-  "fullName": "John Developer"
+  "ConnectionStrings": {
+    "DefaultConnection": "Data Source=resumeanalyzer.db"
+  },
+  "Jwt": {
+    "Key": "your_super_secret_key_here_change_in_production",
+    "Issuer": "AIResumeAnalyzer",
+    "Audience": "AIResumeAnalyzerUsers"
+  }
 }
 ```
 
-**Response:**
-```json
-{
-  "success": true,
-  "message": "User registered successfully",
-  "userId": "abc123"
-}
-```
-</details>
+### Frontend Configuration
 
-<details>
-<summary><strong>POST</strong> <code>/api/auth/login</code> — User Authentication</summary>
+Create `frontend/.env`:
 
-**Request Body:**
-```json
-{
-  "email": "developer@example.com",
-  "password": "SecurePassword123!"
-}
+```env
+VITE_API_URL=http://localhost:5065
 ```
 
-**Response:**
-```json
-{
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
-  "expiresIn": 3600,
-  "tokenType": "Bearer"
-}
-```
-</details>
+---
 
-### 📊 Resume Analysis
+## 🧪 Development
 
-<details>
-<summary><strong>POST</strong> <code>/api/analysis/analyze</code> — Analyze Resume</summary>
+### Running in Development Mode
 
-**Headers:**
-```
-Authorization: Bearer <JWT_TOKEN>
-Content-Type: multipart/form-data
-```
+1. **Backend**: `dotnet watch run` (auto-reloads on changes)
+2. **Frontend**: `npm run dev` (hot module replacement)
 
-**Form Data:**
-- `File`: Resume file (PDF/DOCX, max 5MB)
-- `Description`: Optional context (string)
+### Building for Production
 
-**cURL Example:**
+#### Backend
 ```bash
-curl -X POST "http://localhost:5065/api/analysis/analyze" \
-  -H "Authorization: Bearer <JWT_TOKEN>" \
-  -F "File=@resume.pdf" \
-  -F "Description=Senior Developer Position"
+cd backend
+dotnet publish -c Release -o ./publish
 ```
 
-**Response:**
-```json
-{
-  "success": true,
-  "data": {
-    "keywords": ["C#", "ASP.NET", "SQL", "Azure", "React"],
-    "entities": ["Microsoft", "Google", "Senior Developer"],
-    "sentimentScore": 0.85,
-    "overallScore": 0.92,
-    "suggestions": [
-      "Consider adding cloud platform certifications",
-      "Highlight leadership and mentoring experience",
-      "Include specific project metrics and achievements"
-    ],
-    "analysisId": "analysis_abc123",
-    "processedAt": "2024-07-08T14:30:00Z"
-  }
-}
+#### Frontend
+```bash
+cd frontend
+npm run build
 ```
-</details>
+
+The production build will be in `frontend/dist/`.
 
 ---
 
-## 🔍 Error Handling
+## 🎯 Features in Detail
 
-The API uses consistent error responses:
+### Resume Analysis
 
-```json
-{
-  "success": false,
-  "error": {
-    "code": "VALIDATION_ERROR",
-    "message": "File size exceeds maximum limit of 5MB",
-    "details": ["File must be PDF or DOCX format"]
-  }
-}
-```
+The platform analyzes resumes and provides:
 
-**Common Error Codes:**
-- `AUTHENTICATION_FAILED` — Invalid credentials
-- `UNAUTHORIZED` — Missing or invalid JWT token
-- `VALIDATION_ERROR` — Request validation failure
-- `FILE_PROCESSING_ERROR` — Document parsing issues
+1. **Keywords Extraction**: Identifies technical skills, technologies, and relevant keywords
+2. **Entity Recognition**: Extracts companies, job titles, and important entities
+3. **Sentiment Analysis**: Evaluates the tone and confidence level of the resume
+4. **Overall Score**: Comprehensive score based on multiple factors
+5. **Actionable Suggestions**: Specific recommendations to improve the resume
+
+### Security
+
+- JWT-based authentication with configurable expiration
+- BCrypt password hashing (industry standard)
+- CORS configuration for frontend integration
+- Input validation and error handling
+- Secure file upload with size and type restrictions
 
 ---
 
 ## 🚨 Troubleshooting
 
-### Swagger UI Issues
-
-If you encounter rendering problems:
-
-1. **Hard Refresh**: `Ctrl+Shift+R` (Windows/Linux) or `Cmd+Shift+R` (Mac)
-2. **Private Browser**: Try incognito/private mode
-3. **Different Browser**: Chrome is recommended
-4. **Clear Cache**: Remove browser cache and cookies
-5. **Check Raw JSON**: Visit `http://localhost:5065/swagger/v1/swagger.json`
-
 ### Common Issues
 
-<details>
-<summary><strong>Database Connection Error</strong></summary>
+**Backend won't start**
+- Ensure .NET 8 SDK is installed: `dotnet --version`
+- Check database connection string in `appsettings.json`
+- Run `dotnet ef database update` to create the database
 
-**Problem:** SQLite database not found
-**Solution:** Run `dotnet ef database update`
-</details>
+**Frontend can't connect to API**
+- Verify backend is running on `http://localhost:5065`
+- Check `VITE_API_URL` in frontend `.env` file
+- Ensure CORS is properly configured in backend
 
-<details>
-<summary><strong>File Upload Fails</strong></summary>
-
-**Problem:** File upload returns 400 error
-**Solution:** Check file size (<5MB) and format (PDF/DOCX only)
-</details>
-
-<details>
-<summary><strong>JWT Token Expired</strong></summary>
-
-**Problem:** 401 Unauthorized after some time
-**Solution:** Refresh token via `/api/auth/login`
-</details>
+**File upload fails**
+- Check file size (max 5MB)
+- Ensure file format is PDF or DOCX
+- Verify authentication token is valid
 
 ---
 
-## 🔮 Roadmap & Extensions
+## 🔮 Roadmap
 
-### 🎯 Planned Features
+### Planned Features
 
-- [ ] **Advanced NLP Integration** — OpenAI GPT or Azure Cognitive Services
-- [ ] **Batch Processing** — Multiple resume analysis
-- [ ] **Job Matching** — Resume-to-job description compatibility
-- [ ] **Export Features** — PDF reports and Excel exports
-- [ ] **Cloud Storage** — Azure Blob or AWS S3 integration
-- [ ] **Real-time Notifications** — WebSocket-based updates
-- [ ] **Advanced Analytics** — Dashboard and reporting
-
-### 🔧 Extension Points
-
-```csharp
-// Example: Custom NLP Service Implementation
-public class OpenAINlpService : INlpService
-{
-    public async Task<NlpResult> AnalyzeAsync(string text)
-    {
-        // Your custom NLP logic here
-        // Integrate with OpenAI, Azure Cognitive Services, etc.
-    }
-}
-```
-
----
-
-## 📊 Performance & Scaling
-
-### 🚀 Optimization Tips
-
-- **Database Indexing**: Add indexes for frequently queried fields
-- **Caching**: Implement Redis for API response caching
-- **File Storage**: Move to cloud storage for production
-- **Background Processing**: Use Hangfire for long-running tasks
-
-### 📈 Monitoring
-
-Consider adding:
-- **Application Insights** for telemetry
-- **Serilog** for structured logging
-- **Health Check** endpoints
-- **Metrics** collection
+- [ ] Advanced NLP integration (OpenAI GPT, Azure Cognitive Services)
+- [ ] Batch resume processing
+- [ ] Job description matching
+- [ ] PDF report generation
+- [ ] Resume history and comparison
+- [ ] Cloud storage integration (Azure Blob, AWS S3)
+- [ ] Real-time analysis progress updates
+- [ ] Advanced analytics dashboard
+- [ ] Multi-language support
 
 ---
 
 ## 🤝 Contributing
 
-We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md) for details.
+Contributions are welcome! Please feel free to submit a Pull Request.
 
-### 🐛 Reporting Issues
+### Development Guidelines
 
-Found a bug? [Create an issue](https://github.com/NickiMash17/resume-analyzer-api/issues) with:
-- Clear description
-- Steps to reproduce
-- Expected vs actual behavior
-- Environment details
-
-### 💡 Feature Requests
-
-Have an idea? [Open a discussion](https://github.com/NickiMash17/resume-analyzer-api/discussions) first!
+1. Follow C# coding conventions for backend
+2. Use TypeScript strict mode for frontend
+3. Write meaningful commit messages
+4. Add tests for new features
+5. Update documentation as needed
 
 ---
 
@@ -370,21 +308,22 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 🙏 Acknowledgments
 
-- **UglyToad.PdfPig** team for excellent PDF processing
-- **OpenXML SDK** contributors
-- **.NET Community** for continuous innovation
-- **Open Source Community** for inspiration and collaboration
+- **UglyToad.PdfPig** - Excellent PDF processing library
+- **OpenXML SDK** - DOCX parsing capabilities
+- **.NET Community** - Continuous innovation
+- **React Team** - Amazing UI library
+- **Tailwind CSS** - Beautiful utility-first CSS
 
 ---
 
 <div align="center">
-  <h3>🌟 Star this project if you find it helpful!</h3>
-  
-  **Made with ❤️ and ☕ by [NickiMash17](https://github.com/NickiMash17)**
-  
-  *Transforming resume analysis, one API call at a time*
 
-  [![GitHub stars](https://img.shields.io/github/stars/NickiMash17/resume-analyzer-api?style=social)](https://github.com/NickiMash17/resume-analyzer-api)
-  [![GitHub forks](https://img.shields.io/github/forks/NickiMash17/resume-analyzer-api?style=social)](https://github.com/NickiMash17/resume-analyzer-api)
-  [![Follow on GitHub](https://img.shields.io/github/followers/NickiMash17?style=social)](https://github.com/NickiMash17)
+**Made with ❤️ and ☕**
+
+*Transforming resume analysis with AI-powered insights*
+
+[![GitHub stars](https://img.shields.io/github/stars/yourusername/ai-resume-analyzer?style=social)](https://github.com/yourusername/ai-resume-analyzer)
+[![GitHub forks](https://img.shields.io/github/forks/yourusername/ai-resume-analyzer?style=social)](https://github.com/yourusername/ai-resume-analyzer)
+
 </div>
+
