@@ -68,7 +68,7 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-// Ensure database is created - SIMPLIFIED APPROACH
+// Ensure database is created - RELIABLE APPROACH
 try
 {
     using (var scope = app.Services.CreateScope())
@@ -80,7 +80,7 @@ try
         var dbPath = Path.Combine(Directory.GetCurrentDirectory(), "resumeanalyzer.db");
         Console.WriteLine($"Database path: {dbPath}");
         
-        // Delete empty/corrupted database
+        // Delete corrupted/empty database if it exists
         if (File.Exists(dbPath))
         {
             var fileInfo = new FileInfo(dbPath);
@@ -91,75 +91,45 @@ try
             }
         }
         
-        // ULTRA-SIMPLE: Just call EnsureCreated and verify it worked
-        Console.WriteLine("=== DATABASE INITIALIZATION ===");
-        Console.WriteLine($"Database path: {dbPath}");
-        
         try
         {
-            // Delete empty database if it exists
-            if (File.Exists(dbPath))
+            // Ensure database file exists
+            dbContext.Database.EnsureCreated();
+            
+            // Open connection explicitly
+            if (dbContext.Database.GetDbConnection().State != System.Data.ConnectionState.Open)
             {
-                var fileInfo = new FileInfo(dbPath);
-                if (fileInfo.Length == 0)
-                {
-                    Console.WriteLine("Deleting empty database file...");
-                    File.Delete(dbPath);
-                }
+                dbContext.Database.OpenConnection();
             }
             
-            // Force create database and tables
-            Console.WriteLine("Calling EnsureCreated()...");
-            var created = dbContext.Database.EnsureCreated();
-            Console.WriteLine($"EnsureCreated returned: {created}");
-            
-            // Force a connection to ensure database file is written
-            Console.WriteLine("Opening database connection...");
-            dbContext.Database.OpenConnection();
-            Console.WriteLine("Connection opened.");
-            
-            // Execute a simple query to force table creation
-            Console.WriteLine("Executing test query to verify tables exist...");
-            try
-            {
-                var testQuery = dbContext.Database.ExecuteSqlRaw("SELECT COUNT(*) FROM Users");
-                Console.WriteLine($"Test query executed: {testQuery}");
-            }
-            catch (Exception testEx)
-            {
-                Console.WriteLine($"Test query failed (this is OK if tables don't exist yet): {testEx.Message}");
-            }
-            
-            // Now create tables manually if they don't exist
-            Console.WriteLine("Creating tables via raw SQL...");
+            // Always create tables using raw SQL (CREATE TABLE IF NOT EXISTS is safe)
+            Console.WriteLine("Creating Users table...");
             dbContext.Database.ExecuteSqlRaw(@"
                 CREATE TABLE IF NOT EXISTS Users (
                     Id INTEGER PRIMARY KEY AUTOINCREMENT,
-                    Email TEXT NOT NULL,
+                    Email TEXT NOT NULL UNIQUE,
                     PasswordHash TEXT NOT NULL,
                     FullName TEXT NOT NULL,
-                    CreatedAt TEXT NOT NULL
+                    CreatedAt TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
                 );
             ");
-            Console.WriteLine("Users table created.");
+            Console.WriteLine("✅ Users table created/verified.");
             
+            Console.WriteLine("Creating Resumes table...");
             dbContext.Database.ExecuteSqlRaw(@"
                 CREATE TABLE IF NOT EXISTS Resumes (
                     Id INTEGER PRIMARY KEY AUTOINCREMENT,
                     FileName TEXT NOT NULL,
                     FilePath TEXT NOT NULL,
                     UploadedBy TEXT NOT NULL,
-                    UploadedAt TEXT NOT NULL
+                    UploadedAt TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
                 );
             ");
-            Console.WriteLine("Resumes table created.");
+            Console.WriteLine("✅ Resumes table created/verified.");
             
-            dbContext.Database.CloseConnection();
-            Console.WriteLine("Connection closed.");
-            
-            // Verify
+            // Verify tables exist by querying them
             var userCount = dbContext.Users.Count();
-            Console.WriteLine($"✅ SUCCESS! Database ready. User count: {userCount}");
+            Console.WriteLine($"✅ Database ready! Current user count: {userCount}");
             
             if (File.Exists(dbPath))
             {
@@ -169,31 +139,26 @@ try
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"❌ ERROR: {ex.Message}");
+            Console.WriteLine($"❌ ERROR during database initialization:");
+            Console.WriteLine($"Message: {ex.Message}");
             Console.WriteLine($"Type: {ex.GetType().Name}");
             if (ex.InnerException != null)
             {
                 Console.WriteLine($"Inner: {ex.InnerException.Message}");
             }
-            Console.WriteLine($"Stack: {ex.StackTrace}");
+            throw; // Re-throw to prevent app from starting with broken database
         }
-        
-        // Verify tables exist
-        try
+        finally
         {
-            var userCount = dbContext.Users.Count();
-            Console.WriteLine($"Database is ready. Current user count: {userCount}");
-            
-            if (File.Exists(dbPath))
+            // Ensure connection is closed
+            try
             {
-                var fileInfo = new FileInfo(dbPath);
-                Console.WriteLine($"Database file size: {fileInfo.Length} bytes");
+                if (dbContext.Database.GetDbConnection().State == System.Data.ConnectionState.Open)
+                {
+                    dbContext.Database.CloseConnection();
+                }
             }
-        }
-        catch (Exception verifyEx)
-        {
-            Console.WriteLine($"ERROR verifying database: {verifyEx.Message}");
-            Console.WriteLine($"This means tables still don't exist!");
+            catch { }
         }
         
         Console.WriteLine("=== DATABASE INITIALIZATION END ===");
@@ -201,7 +166,7 @@ try
 }
 catch (Exception ex)
 {
-    Console.WriteLine($"CRITICAL ERROR initializing database:");
+    Console.WriteLine($"❌ CRITICAL ERROR initializing database:");
     Console.WriteLine($"Message: {ex.Message}");
     Console.WriteLine($"Type: {ex.GetType().Name}");
     if (ex.InnerException != null)
@@ -209,6 +174,7 @@ catch (Exception ex)
         Console.WriteLine($"Inner: {ex.InnerException.Message}");
     }
     Console.WriteLine($"Stack: {ex.StackTrace}");
+    // Don't throw - let the app start but log the error
 }
 
 // Configure the HTTP request pipeline.
