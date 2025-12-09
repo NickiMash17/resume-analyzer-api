@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
-import { analysisService, AnalysisResult } from '../services/api';
+import { analysisService } from '../services/api';
+import type { AnalysisResult } from '../services/api';
 import { Upload, FileText, LogOut, CheckCircle, AlertCircle, TrendingUp, Lightbulb, Award } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 

@@ -1,5 +1,7 @@
-import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { authService, LoginData, RegisterData } from '../services/api';
+import { createContext, useContext, useState, useEffect } from 'react';
+import type { ReactNode } from 'react';
+import { authService } from '../services/api';
+import type { LoginData, RegisterData } from '../services/api';
 
 interface User {
   email: string;
@@ -17,17 +19,23 @@ interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [token, setToken] = useState<string | null>(null);
 
   useEffect(() => {
-    const storedToken = localStorage.getItem('token');
-    const storedUser = localStorage.getItem('user');
-    
-    if (storedToken && storedUser) {
-      setToken(storedToken);
-      setUser(JSON.parse(storedUser));
+    try {
+      const storedToken = localStorage.getItem('token');
+      const storedUser = localStorage.getItem('user');
+      
+      if (storedToken && storedUser) {
+        setToken(storedToken);
+        setUser(JSON.parse(storedUser));
+      }
+    } catch (error) {
+      console.error('Error loading stored auth data:', error);
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
     }
   }, []);
 
@@ -35,10 +43,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const response = await authService.login(data);
     setToken(response.token);
     
-    // Decode token to get user info (simplified - in production, use jwt-decode)
     const userData: User = {
       email: data.email,
-      fullName: '', // Would be decoded from token in production
+      fullName: '',
     };
     
     setUser(userData);
@@ -48,7 +55,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
   const register = async (data: RegisterData) => {
     await authService.register(data);
-    // Auto-login after registration
     await login({ email: data.email, password: data.password });
   };
 

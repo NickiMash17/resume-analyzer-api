@@ -71,13 +71,27 @@ export interface AnalysisResponse {
 
 export const authService = {
   register: async (data: RegisterData): Promise<{ success: boolean }> => {
-    const response = await api.post('/api/auth/register', data);
-    return response.data;
+    try {
+      const response = await api.post('/api/auth/register', data);
+      console.log('Registration response:', response.data);
+      // Backend returns { Success: true }, map it to { success: true }
+      return {
+        success: response.data.Success || response.data.success || false,
+      };
+    } catch (error: any) {
+      console.error('Registration API error:', error);
+      console.error('Response data:', error.response?.data);
+      throw error;
+    }
   },
 
   login: async (data: LoginData): Promise<AuthResponse> => {
     const response = await api.post('/api/auth/login', data);
-    return response.data;
+    // Backend returns Token (capital T), map it to token
+    return {
+      token: response.data.Token || response.data.token,
+      expiresIn: response.data.ExpiresIn || response.data.expiresIn || 3600,
+    };
   },
 };
 
