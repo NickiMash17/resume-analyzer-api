@@ -18,13 +18,20 @@ namespace ResumeAnalyzerAPI.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterModel model)
         {
-            if (string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.Password) || string.IsNullOrWhiteSpace(model.FullName))
-                return BadRequest("Email, password, and full name are required.");
+            try
+            {
+                if (string.IsNullOrWhiteSpace(model.Email) || string.IsNullOrWhiteSpace(model.Password) || string.IsNullOrWhiteSpace(model.FullName))
+                    return BadRequest(new { Error = "Email, password, and full name are required." });
 
-            var user = await _authService.RegisterAsync(model.Email, model.Password, model.FullName);
-            if (user == null)
-                return BadRequest("User already exists");
-            return Ok(new { Success = true });
+                var user = await _authService.RegisterAsync(model.Email, model.Password, model.FullName);
+                if (user == null)
+                    return BadRequest(new { Error = "User already exists" });
+                return Ok(new { Success = true });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { Error = $"Registration failed: {ex.Message}", Details = ex.ToString() });
+            }
         }
 
         [HttpPost("login")]
